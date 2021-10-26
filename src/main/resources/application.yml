@@ -1,0 +1,63 @@
+welcome:
+  message: Welcome To Spring Boot SSO Demo
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-69524402.okta.com
+          jwk-set-uri: https://dev-69524402.okta.com/oauth2/v1/keys
+        opaquetoken:
+          client-id: 0oa2bxvinpQ154J8c5d7
+          client-secret: VjXXDIrwMg9TcNdy64x0zl0Qx3b1AGleAjUHPltr
+          introspection-uri: https://dev-69524402.okta.com/oauth2/v1/introspect
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:706345019154-thlp1f9rv9u3m2mcoi5eu40ldromiu29.apps.googleusercontent.com}
+            client-secret: ${GOOGLE_CLIENT_SECRET:-kHabX1nHf1mFn-b07YD_9Hn}
+          okta:
+            client-id: ${OKTA_CLIENT_ID:0oa2bftgwhuNME9mi5d7}
+            client-secret: ${OKTA_CLIENT_SECRET:f46rAVWbDxCMlIbBplKFyaiDyQqi7PpZubHyDh-0}
+            clientName: Okta
+            scope: ${OKTA_SCOPES:email, profile, openid}
+          ms365:
+            client-id: ${MS_CLIENT_ID:ba5bcbfb-4e17-4b5e-9678-5f6820b03a15}
+            client-secret: ${MS_CLIENT_SECRET:Z.g7Q~wpJA6iso1.CbgVXMsE-qsQKehk.yCcM}
+            clientName: Microsoft Office 365
+            scope: ${MS_SCOPES:email, profile, openid}
+            authorization-grant-type: authorization_code
+            client-authentication-method: basic
+            authentication-method: post
+        provider:
+          okta:
+            issuer-uri: https://dev-69524402.okta.com
+            redirect-uri: /authorization-code/callback
+          ms365:
+            issuer-uri: https://login.microsoftonline.com/980de4c3-1c61-40c5-99a2-60f5dcd384be/v2.0
+            token-uri: https://login.microsoftonline.com/980de4c3-1c61-40c5-99a2-60f5dcd384be/oauth2/v2.0/token
+            user-info-uri: https://graph.microsoft.com/oidc/userinfo
+            jwt-set-uri: https://login.microsoftonline.com/980de4c3-1c61-40c5-99a2-60f5dcd384be/discovery/v2.0/keys
+            redirect-uri: /login/oauth2/code/ms365
+  thymeleaf:
+    cache: false
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5439/users_db}
+    username: ${DATASOURCE_USERNAME:postgres}
+    password: ${DATASOURCE_PASSWORD:admin}
+  jpa:
+    properties:
+      hibernate:
+        dialect: ${PERSISTENCE_DIALECT:org.hibernate.dialect.PostgreSQLDialect}
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    hibernate:
+      ddl-auto: create
+server:
+  port: 9080
+
+logging:
+  level:
+    org.springframework.web.client.RestTemplate: DEBUG
+

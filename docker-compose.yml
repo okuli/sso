@@ -1,0 +1,31 @@
+version: '3.7'
+services:
+  # Postgres as the SQL Persistence
+  postgres:
+    image: postgres
+    ports:
+      - 5439:5432
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=users_db
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  sso-users-service:
+    build: .
+    environment:
+      DATASOURCE_URL: jdbc:postgresql://postgres:5432/users_db
+      DATASOURCE_USERNAME: postgres
+      DATASOURCE_PASSWORD: admin
+      MAXIMUM_CLASS_SIZE: 50
+      PERSISTENCE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+    expose:
+      - '9080'
+    ports:
+      - '9080:9080'
+
+volumes:
+  postgres-volume:
